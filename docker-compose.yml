@@ -1,0 +1,80 @@
+version: "3.7"
+services:
+  app:
+    # Build the image using the Dockerfile in the current directory.
+    build:
+      args:
+        # Define arguments to pass to the Dockerfile.
+        user: sammy
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    # Give the image a name for reference in other parts of the compose file.
+    image: laravel
+    # Give the container a name for reference when running.
+    container_name: laravel-app
+    # Restart the container unless it is manually stopped.
+    restart: unless-stopped
+    # Set the working directory for the container.
+    working_dir: /var/www/
+    # Mount the local directory to the working directory in the container.
+    volumes:
+      - ./:/var/www
+    # Connect the container to the "laravel" network.
+    networks:
+      - laravel
+
+  db:
+    # Use the MySQL 8.0 image.
+    image: mysql:8.0
+    # Give the container a name for reference when running.
+    container_name: laravel-db
+    # Restart the container unless it is manually stopped.
+    restart: unless-stopped
+    # Map the local port 3306 to the container's port 3306.
+    ports:
+      - 3306:3306
+    # Set environment variables for the database.
+    environment:
+      MYSQL_DATABASE: homestead
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_PASSWORD: secret
+      MYSQL_USER: homestead
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    # Mount the local "initdb.d" and "data" directories to the corresponding directories in the container.
+    # Mounting the database /var/lib/mysql makes the database persistant.
+    # Any .sql files in the mysql/initdb.d/ folder will be automatically loaded into the database
+    volumes:
+      - ./docker-compose/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./docker-compose/mysql/data:/var/lib/mysql
+    # Connect the container to the "laravel" network.
+    networks:
+      - laravel
+
+  nginx:
+    # Use the alpine version of the nginx image.
+    image: nginx:alpine
+    # Give the container a name for reference when running.
+    container_name: laravel-nginx
+    # Restart the container unless it is manually stopped.
+    restart: unless-stopped
+    # Map the local port 8000 to the container's port 80.
+    ports:
+      - 8000:80
+    # Mount the local directory, the "nginx" directory, and the "logs" directory to the corresponding directories in the container.
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+      - ./logs/:/var/log/nginx/
+    # Connect the container to the "laravel" network.
+    networks:
+      - laravel
+    # Wait for the "app" service to be up and running before starting this service.
+    depends_on:
+      - app
+
+networks:
+  laravel:
+    # Use the bridge network driver.
+    driver: bridge
