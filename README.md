@@ -62,6 +62,9 @@ To stop the running containers, use the following command:
 To restart the containers, use the following command:
 ```$ docker-compose up -d```
 
+## Tested with
+* Laravel 7.5
+
 ## Contributing
 Contributions are welcome! Please fork this repository and open a pull request to add or improve any features.
 1. Fork it
