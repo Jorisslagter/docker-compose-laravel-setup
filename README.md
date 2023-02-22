@@ -1,11 +1,18 @@
 # Laravel PHP 7.4 with PHP-FPM, Nginx, and MySQL Docker Compose
-
-This repository contains a Docker Compose setup for a Laravel PHP 7.4 application with PHP-FPM, Nginx, and MySQL.
+A Docker Compose setup for Laravel applications. This repository provides a simple and flexible way to set up and run a Laravel project using Docker containers.
 
 ## Requirements
 * Docker and Docker Compose
 * Git
 * Laravel 5.7
+
+
+## Features
+* Laravel PHP 7.4 application with PHP-FPM
+* MySQL 8.0 database
+* Nginx web server
+* Persistent data storage for the database
+* Automatic loading of SQL files in ./docker-compose/mysql/initdb.d/
 
 ## Getting started
 
@@ -41,6 +48,11 @@ This command will download the required images and start the containers in the b
 
 ## Customizing the setup
 You can modify the environment variables, ports, and other settings in the `docker-compose.yml` file.
+
+* Dockerfile for the Laravel PHP 7.4 application with PHP-FPM
+* docker-compose.yml for the entire setup
+* docker-compose/nginx/nginx.conf for the Nginx configuration
+* docker-compose/mysql/initdb.d/ for the *.SQL files to be loaded into the database
 
 ## Stopping the containers
 To stop the running containers, use the following command:
