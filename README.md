@@ -59,4 +59,4 @@ Contributions are welcome! Please fork this repository and open a pull request t
 5. Create a new Pull Request
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the GPL-3.0 license - see the LICENSE file for details.
